@@ -64,11 +64,25 @@
             <version>1.54p</version>
         </dependency>
 
+        <!-- FFT and numerical utilities for synthetic motion models -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+
         <!-- TrackMate 8 API -->
         <dependency>
             <groupId>sc.fiji</groupId>
             <artifactId>TrackMate</artifactId>
             <version>8.1.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
