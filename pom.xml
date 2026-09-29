@@ -1,94 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- xml的版本和语言，方便中文字体 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-         https://maven.apache.org/xsd/maven-4.0.0.xsd">
-<!-- 当前 XML 中的 <project>等标签，属于 Maven POM 4.0.0 这套语法，标识XML标签属于哪套规范 -->
-<!-- 先声明一个前缀xsi,告诉XML编辑器，xsi开头的属性来自XML Schema规范-->
-<!-- 告诉VScode，Maven POM的语法规则可以通过XSD结构描述来检查（拼写错误之类）-->
-
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-<!-- 当前POM使用Maven POM 4.0.0 模型-->
 
-    <!-- 你自己的项目坐标 -->
     <groupId>io.github.zhengfangfang0304</groupId>
-    <artifactId>imagej-particle-tracking</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
-<!--groupId表示项目所属的组织或开发者命名空间-->
-<!--artifactId表示项目名称artifactID和version参与组成jar的文件名-->
-<!--version表示项目版本，-SNAPSHOT表示快照版本,临时版本，正式发布需要去掉-->
- <!-- 这是Maven默认规则，但为了更容易被ImageJ/Fiji菜单识别，最好让最终jar名字中含有下划线
- 但Maven坐标和最终jar文件名可以不完全一样，所以我们通过finalName改变最终生成的jar文件名 -->
-
-
-
-
-
-    <!-- 明确说明最终生成的是 jar 文件 -->
+    <artifactId>synspt</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <!-- 项目的显示名称和说明 -->
-    <name>SPTurbo</name>
-    <description>
-        A GUI plugin for single-particle detection and tracking in ImageJ/Fiji.
-    </description>
+    <name>synSPT Synthetic Data Generator</name>
+    <description>synSPT is a Java 8 compatible extensible synthetic SPT microscopy platform for ImageJ/Fiji.</description>
+    <url>https://github.com/zhengfangfang0304/synSPT</url>
 
-    <!-- 项目编译配置 ，版本，字符编码-->
+    <scm>
+        <connection>scm:git:https://github.com/zhengfangfang0304/synSPT.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/zhengfangfang0304/synSPT.git</developerConnection>
+        <url>https://github.com/zhengfangfang0304/synSPT</url>
+    </scm>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <maven.compiler.release>21</maven.compiler.release>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <imagej1.version>1.54p</imagej1.version>
+        <commons-math3.version>3.6.1</commons-math3.version>
+        <junit.version>4.13.2</junit.version>
     </properties>
-    <!-- Maven compiler Plugin现在更推荐使用release参数，但目前这套source＋target参数仍然可以使用，release参数在Maven 3.6.0以上才支持 -->
 
-
-    <!-- 告诉 Maven 去哪里查找 SciJava、Fiji 和 TrackMate 。不是声明使用哪个库而是告诉maven去哪个服务器找库-->
-    <repositories>
-        <repository><!-- 一个具体的Maven仓库配置-->
-            <id>scijava.public</id><!--给下载地址取个名字-->
-            <url>
-                https://maven.scijava.org/content/groups/public<!--仓库实际地址-->
-            </url>
-        </repository>
-    </repositories>
-
-    <!-- 项目使用的外部 Java 库 -->
-    <dependencies> <!-- 复数dependencies表示依赖集合，里面每一个具体依赖使用dependency -->
-
-        <!-- ImageJ 1.x API -->
+    <dependencies>
+        <!-- Supplied by ImageJ/Fiji at runtime; never bundled into the plugin. -->
         <dependency>
             <groupId>net.imagej</groupId>
             <artifactId>ij</artifactId>
-            <version>1.54p</version>
+            <version>${imagej1.version}</version>
+            <scope>provided</scope>
         </dependency>
 
-        <!-- FFT and numerical utilities for synthetic motion models -->
+        <!-- FFT and special-function backend. Relocated into the final plugin JAR. -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
-            <version>3.6.1</version>
-        </dependency>
-
-        <!-- TrackMate 8 API -->
-        <dependency>
-            <groupId>sc.fiji</groupId>
-            <artifactId>TrackMate</artifactId>
-            <version>8.1.6</version>
+            <version>${commons-math3.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.10.2</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
-        <finalName>SPTurbo_-${project.version}</finalName>
+        <finalName>synSPT-${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <artifactSet>
+                                <includes>
+                                    <include>org.apache.commons:commons-math3</include>
+                                </includes>
+                            </artifactSet>
+                            <filters>
+                                <filter>
+                                    <artifact>org.apache.commons:commons-math3</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.commons.math3</pattern>
+                                    <shadedPattern>io.github.zhengfangfang0304.synspt.internal.commonsmath3</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
-    
 </project>

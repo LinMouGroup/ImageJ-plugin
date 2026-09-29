@@ -1,41 +1,16 @@
-# Maven build output
+ # Maven build
 target/
+
+# Java compiled files
 *.class
 
-# Packaged artifacts
-*.jar
-*.war
-*.ear
-
-# IDE files
+# IDE
 .idea/
-*.iml
 .vscode/
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
 # Logs
 *.log
-
-# Generated simulation datasets
-datasets/
-output/
-outputs/
-synthetic_benchmark_dataset/
-standard_brownian_einstein_dataset/
-
-# Generated simulation files
-simulation_movie.tif
-ground_truth_detections.csv
-ground_truth_tracks.csv
-simulation_config.json
-experiment_config.json
-
-# Large image/data outputs
-*.tif
-*.tiff
-*.ome.tif
-*.ome.tiff
-#如果你以后想在仓库里放少量示例 .tif，那最后几行 *.tif 可以暂时不写。
